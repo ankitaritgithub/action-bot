@@ -1,0 +1,111 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>GitHub Bot</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+
+        text-align: center;
+      }
+
+      .container {
+        max-width: 800px;
+
+        margin: 40px auto;
+
+        padding: 20px;
+
+        background-color: #f7f7f7;
+
+        border: 1px solid #ddd;
+
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .message {
+        margin-bottom: 20px;
+
+        padding: 10px;
+
+        border-bottom: 1px solid #ccc;
+      }
+
+      .message:last-child {
+        border-bottom: none;
+      }
+
+      .bot-response {
+        color: #666;
+
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>GitHub Bot</h1>
+
+      <input type="text" id="message" placeholder="Type a message..." />
+
+      <button id="send">Send</button>
+
+      <div id="messages"></div>
+    </div>
+
+    <script>
+      const messageInput = document.getElementById("message");
+
+      const sendButton = document.getElementById("send");
+
+      const messagesContainer = document.getElementById("messages");
+
+      sendButton.addEventListener("click", async () => {
+        const message = messageInput.value.trim();
+
+        if (message) {
+          try {
+            const response = await fetch("/github-bot", {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json",
+              },
+
+              body: JSON.stringify({ message }),
+            });
+
+            const botResponse = await response.json();
+
+            const messageHTML = ` 
+
+                        <div class="message"> 
+
+                            <span>You: ${message}</span> 
+
+                            <span class="bot-response">${botResponse}</span> 
+
+                        </div> 
+
+                    `;
+
+            messagesContainer.innerHTML += messageHTML;
+
+            messageInput.value = "";
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
