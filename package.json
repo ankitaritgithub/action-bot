@@ -1,0 +1,10 @@
+{
+    "name": "github-bot",
+    "version": "1.0.0",
+    "scripts": {
+      "start": "node github-bot.js"
+    },
+    "dependencies": {
+      "express": "^4.17.1"
+    }
+  }
